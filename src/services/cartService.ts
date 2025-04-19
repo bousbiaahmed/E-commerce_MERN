@@ -1,4 +1,4 @@
-import { cartModel } from "../models/cartModel";
+import { ICart, ICartItem, cartModel } from "../models/cartModel";
 import productModel from "../models/productModel";
 
 interface createCartForUser {
@@ -25,6 +25,17 @@ export const getActiveCartForUser = async ({
   }
   return cart;
 };
+interface ClearCart{
+  userId:string;
+}
+export const clearCart = async ({userId}:ClearCart) => {
+  const cart = await getActiveCartForUser({userId});
+  cart.items = [];
+  cart.totalAmount=0
+  const updateCart= await cart.save();
+return {data:updateCart,statusCode:200 }
+}
+
 
 interface AddItemToCart {
   productId: any;
@@ -100,10 +111,8 @@ export const updateItemInCart = async ({
   const otherCartItems = cart.items.filter(
     (p) => p.product.toString() !== productId
   );
-  let total = otherCartItems.reduce((sum, product) => {
-    sum += product.quantity * product.unitPrice;
-    return sum;
-  }, 0);
+  let total = calculateCartTotalItems({cartItems:otherCartItems})
+
 
   existsInCart.quantity = quantity;
 
@@ -113,3 +122,46 @@ export const updateItemInCart = async ({
    const updateCart = await cart.save();
    return { data: updateCart, statusCode: 200 };
 };
+
+
+interface DeleteItemInCart {
+  productId: any;
+  userId: string;
+
+}
+
+ export const deleteItemIncart= async({userId,productId}:DeleteItemInCart)=>{
+
+  const cart = await getActiveCartForUser({ userId });
+
+  const existsInCart = cart.items.find(
+    (p) => p.product.toString() === productId
+  );
+
+  if (!existsInCart) {
+    return { data: "Item not found in cart!", statusCode: 400 };
+  }
+
+  const otherCartItems = cart.items.filter(
+    (p) => p.product.toString() !== productId
+  );
+
+  const total = calculateCartTotalItems({cartItems:otherCartItems})
+
+  cart.items = otherCartItems;
+  cart.totalAmount=total;
+
+  const updateCart = await cart.save();
+   return { data: updateCart, statusCode: 200 };
+}
+
+const  calculateCartTotalItems=({cartItems}:{cartItems:ICartItem[]})=>{
+ 
+  const total = cartItems.reduce((sum, product) => {
+    sum += product.quantity * product.unitPrice;
+    return sum;
+  }, 0);
+
+  return total;
+
+}
