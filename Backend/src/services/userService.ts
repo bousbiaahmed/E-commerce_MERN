@@ -11,22 +11,29 @@ interface RegisterParams{
 
 
 
-export const register= async({firstName,lastName,email,password}:RegisterParams)=>{
-
-    const findUser=await userModel.findOne({email})
-
-    if(findUser){
-
-        return { data:"User already exists!",statusCode:400};
-
+export const register = async ({ firstName, lastName, email, password }: RegisterParams) => {
+    const findUser = await userModel.findOne({ email });
+  
+    if (findUser) {
+      return {
+        data: { message: "User already exists!" },
+        statusCode: 400,
+      };
     }
-    const hashedPassword=await bcrypt.hash(password,10)
-    const newUser=new userModel({email,password:hashedPassword,firstName,lastName})
-
-     await newUser.save()
-
-     return { data:generateJWT({firstName,lastName,email}),statusCode:200};
-}
+  
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = new userModel({ email, password: hashedPassword, firstName, lastName });
+  
+    await newUser.save();
+  
+    const token = generateJWT({ firstName, lastName, email });
+  
+    return {
+      data: { token },
+      statusCode: 200,
+    };
+  };
+  
 
 interface LoginParams{
     email:string;

@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { ShoppingCart } from 'lucide-react';
 import React from 'react';
+import { useRouter } from 'next/navigation';
 
 interface Props {
   _id: string;
@@ -11,12 +12,18 @@ interface Props {
   image: string;
 }
 
-const ProductCard: React.FC<Props> = ({  title, image, price }) => {
+const ProductCard: React.FC<Props> = ({ _id, title, image, price }) => {
+  const router = useRouter();
+
+  const handleViewDetails = () => {
+    router.push(`/pages/detaillPage/${_id}`);
+  };
+
   return (
     <div className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 w-full max-w-sm">
       <div className="relative w-full h-56">
         <Image
-          src={image }
+          src={image}
           alt={title}
           fill
           className="object-cover"
@@ -29,7 +36,10 @@ const ProductCard: React.FC<Props> = ({  title, image, price }) => {
           <h3 className="text-lg font-semibold text-gray-800">{title}</h3>
           <p className="text-green-600 font-bold text-md">${price}</p>
         </div>
-        <button className="mt-4 w-full bg-green-500 text-white py-2 rounded-xl hover:bg-green-600 flex items-center justify-center gap-2 transition">
+        <button
+          onClick={handleViewDetails}
+          className="mt-4 w-full bg-green-500 text-white py-2 rounded-xl hover:bg-green-600 flex items-center justify-center gap-2 transition"
+        >
           <ShoppingCart size={18} />
           View Details
         </button>

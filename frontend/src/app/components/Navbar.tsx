@@ -1,8 +1,13 @@
 'use client';
 
 import Link from 'next/link';
+import { useAuth } from '../context/Auth/AuthContext';
 
 const Navbar = () => {
+
+  const {username,token} = useAuth();
+  console.log("from navbar ya habibi ",{username,token})
+  
   return (
     <nav className="bg-white shadow-md px-6 py-4 flex justify-between items-center">
       <div className="text-xl font-bold text-gray-800">
@@ -10,7 +15,7 @@ const Navbar = () => {
       </div>
       <div className="space-x-4">
         <Link
-          href="/login"
+          href="/pages/login"
           className="text-gray-700 hover:text-blue-600 transition"
         >
           Login

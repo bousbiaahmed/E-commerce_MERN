@@ -1,7 +1,131 @@
 {
-  
-  "scripts": {
-    "frontend": "npm --prefix frontend run dev",
-    "backend": "npm --prefix backend run dev"
-  }
+  
+
+
+
+"scripts": {
+  
+
+
+
+  
+
+
+
+"frontend": "npm --prefix frontend run dev",
+  
+
+
+
+  
+
+
+
+"backend": "npm --prefix backend run dev"
+  
+
+
+
+},
+  
+
+
+
+"devDependencies": {
+  
+
+
+
+  
+
+
+
+"@types/bcrypt": "^5.0.2",
+  
+
+
+
+  
+
+
+
+"@types/cors": "^2.8.19",
+  
+
+
+
+  
+
+
+
+"@types/jsonwebtoken": "^9.0.9",
+  
+
+
+
+  
+
+
+
+"ts-node": "^10.9.2",
+  
+
+
+
+  
+
+
+
+"typescript": "^5.8.3"
+  
+
+
+
+},
+  
+
+
+
+"dependencies": {
+  
+
+
+
+  
+
+
+
+"bcrypt": "^6.0.0",
+  
+
+
+
+  
+
+
+
+"cors": "^2.8.5",
+  
+
+
+
+  
+
+
+
+"jsonwebtoken": "^9.0.2",
+  
+
+
+
+  
+
+
+
+"react-icons": "^5.5.0"
+  
+
+
+
+}
 }

@@ -1,18 +1,23 @@
 'use client';
 
+import { useAuth } from "@/app/context/Auth/AuthContext";
 import { BASE_URL } from "../../constants/baseUrl";
 import { useRef, useState } from 'react';
-
+import { useRouter } from "next/navigation";
+import Navbar from "@/app/components/Navbar";
 export default function Register() {
   const firstNameRef = useRef<HTMLInputElement>(null);
   const lastNameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
-
+  const {login} = useAuth();
   const [error, setError] = useState("");
+  const router = useRouter();
+  const {username,token}=useAuth()
+  console.log("hello from login ",{username,token})
 
   const onSubmit = async (event: React.FormEvent) => {
-    event.preventDefault(); // Prevent page reload
+    event.preventDefault(); 
 
     const firstName = firstNameRef.current?.value;
     const lastName = lastNameRef.current?.value;
@@ -39,9 +44,11 @@ export default function Register() {
       });
 
       if (!response.ok) {
-        setError("Unable to register user, please try different credentials!");
+        const errorRes = await response.json();
+        setError(errorRes.message || "Unable to register user, please try different credentials!");
         return;
       }
+      
 
       const token = await response.json();
 
@@ -49,16 +56,22 @@ export default function Register() {
         setError("Incorrect token");
         return;
       }
+       
+     login(email, token)
 
-      setError(""); // Clear any error
-      // Optionally redirect or show success message here
-      console.log("User registered successfully!", token);
+     router.push("/pages/login");
+
+  
+     
+   
     } catch  {
       setError("Something went wrong. Please try again.");
+    
     }
   };
 
   return (
+
     <div className="max-w-md mx-auto p-6 bg-white rounded-xl shadow-md mt-10">
       <h2 className="text-2xl font-semibold mb-6 text-center">Register</h2>
       <form onSubmit={onSubmit} className="space-y-4">
@@ -101,6 +114,7 @@ export default function Register() {
         >
           Register
         </button>
+        
       </form>
     </div>
   );
