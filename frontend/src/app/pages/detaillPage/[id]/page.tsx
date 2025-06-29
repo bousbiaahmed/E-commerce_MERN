@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { BASE_URL } from '@/app/constants/baseUrl';
 import { FaCheckCircle, FaTimesCircle, FaShoppingCart } from 'react-icons/fa';
+import { useCart } from '@/app/context/Cart/CartContext';
+import Navbar2 from '@/app/components/Navbar2';
 
 interface Product {
   _id: string;
@@ -12,6 +14,7 @@ interface Product {
   price: number;
   stock: number;
   description: string;
+  category:string;
 }
 
 export default function ProductDetailPage() {
@@ -19,6 +22,7 @@ export default function ProductDetailPage() {
   const [product, setProduct] = useState<Product | null>(null);
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
+  const {addItemToCart}=useCart()
 
   useEffect(() => {
     async function fetchProduct() {
@@ -44,7 +48,8 @@ export default function ProductDetailPage() {
   if (error) return <p className="text-center text-red-600 mt-10">Erreur : {error}</p>;
   if (!product) return <p className="text-center mt-10">Produit introuvable</p>;
 
-  return (
+  return (<>
+      <Navbar2/>
     <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
       <div className="w-full max-w-5xl bg-white p-8 rounded-2xl shadow-xl grid md:grid-cols-2 gap-10">
         <img
@@ -75,11 +80,16 @@ export default function ProductDetailPage() {
           <button
             className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl flex items-center gap-2 font-medium disabled:bg-gray-400"
             disabled={product.stock === 0}
+            onClick={() => {
+              addItemToCart(product._id);
+            }}
+            
           >
             <FaShoppingCart /> Ajouter au panier
           </button>
         </div>
       </div>
     </div>
+    </>
   );
 }

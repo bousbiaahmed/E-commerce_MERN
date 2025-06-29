@@ -14,16 +14,26 @@ const createCartForUser = async ({ userId }: createCartForUser) => {
 
 interface GetActiveCartForUser {
   userId: string;
+  populateProduct?: boolean;
 }
 
 export const getActiveCartForUser = async ({
   userId,
+  populateProduct,
 }: GetActiveCartForUser) => {
-  let cart = await cartModel.findOne({ userId, status: "active" });
+  let cart;
+  if (populateProduct) {
+    cart = await cartModel
+      .findOne({ userId, status: "active" })
+      .populate("items.product");
+  } else {
+    cart = await cartModel.findOne({ userId, status: "active" });
+  }
 
   if (!cart) {
     cart = await createCartForUser({ userId });
   }
+
   return cart;
 };
 interface ClearCart{
@@ -34,7 +44,7 @@ export const clearCart = async ({userId}:ClearCart) => {
   cart.items = [];
   cart.totalAmount=0
   const updateCart= await cart.save();
-return {data:updateCart,statusCode:200 }
+return {data:await getActiveCartForUser({userId, populateProduct:true}),statusCode:200 }
 }
 
 
@@ -75,9 +85,9 @@ export const addItemToCart = async ({
 
   cart.totalAmount += product.price * quantity;
 
-  const updateCart = await cart.save();
+  await cart.save();
 
-  return { data: updateCart, statusCode: 200 };
+  return { data:  await getActiveCartForUser({userId, populateProduct:true}), statusCode: 200 };
 };
 
 interface UpdateItemInCart {
@@ -120,8 +130,8 @@ export const updateItemInCart = async ({
 
   total += existsInCart.quantity * existsInCart.unitPrice;
   cart.totalAmount = total;
-   const updateCart = await cart.save();
-   return { data: updateCart, statusCode: 200 };
+ await cart.save();
+   return { data: await getActiveCartForUser({userId,populateProduct:true}), statusCode: 200 };
 };
 
 
@@ -152,8 +162,8 @@ interface DeleteItemInCart {
   cart.items = otherCartItems;
   cart.totalAmount=total;
 
-  const updateCart = await cart.save();
-   return { data: updateCart, statusCode: 200 };
+ await cart.save();
+   return { data: await getActiveCartForUser({userId,populateProduct:true}), statusCode: 200 };
 }   
 
 const  calculateCartTotalItems=({cartItems}:{cartItems:ICartItem[]})=>{

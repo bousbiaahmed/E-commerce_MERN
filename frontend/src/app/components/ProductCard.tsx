@@ -14,6 +14,7 @@ interface Props {
 
 const ProductCard: React.FC<Props> = ({ _id, title, image, price }) => {
   const router = useRouter();
+  
 
   const handleViewDetails = () => {
     router.push(`/pages/detaillPage/${_id}`);
