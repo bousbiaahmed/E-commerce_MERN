@@ -1,62 +1,155 @@
 'use client';
 
 import Link from 'next/link';
-import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa';
+import { motion } from 'framer-motion';
+import { FaGithub, FaLinkedin, FaTwitter, FaArrowUp } from 'react-icons/fa';
 
 const Footer = () => {
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
+
   return (
-    <footer className="bg-gray-900 text-white py-10 px-6 mt-16">
-      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-        {/* About */}
-        <div>
-          <h2 className="text-xl font-semibold mb-4">About Us</h2>
-          <p className="text-sm text-gray-400">
-            We create high-quality web experiences focused on modern design and performance.
+    <footer className="bg-gray-900 text-gray-300 w-full border-t border-gray-800">
+      <div className="max-w-7xl mx-auto px-6 py-12 md:py-16">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
+          {/* Brand Column */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+            className="space-y-4"
+          >
+            <h2 className="text-2xl font-bold text-white">
+              <span className="bg-yellow-500/20 text-yellow-400 px-2 py-1 rounded-md">L&B</span> Bazaar
+            </h2>
+            <p className="text-gray-400 text-sm leading-relaxed">
+              Premium e-commerce experience with modern design and exceptional performance.
+            </p>
+            <button 
+              onClick={scrollToTop}
+              className="flex items-center gap-2 text-sm text-gray-400 hover:text-yellow-400 transition-colors"
+            >
+              <FaArrowUp className="text-xs" />
+              Back to top
+            </button>
+          </motion.div>
+
+          {/* Links Columns */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            viewport={{ once: true }}
+            className="space-y-4"
+          >
+            <h3 className="text-lg font-medium text-white">Shop</h3>
+            <ul className="space-y-3">
+              {['New Arrivals', 'Best Sellers', 'Collections', 'Discounts'].map((item) => (
+                <li key={item}>
+                  <Link 
+                    href="#" 
+                    className="text-gray-400 hover:text-yellow-400 text-sm transition-colors"
+                  >
+                    {item}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            viewport={{ once: true }}
+            className="space-y-4"
+          >
+            <h3 className="text-lg font-medium text-white">Support</h3>
+            <ul className="space-y-3">
+              {['Contact Us', 'FAQs', 'Shipping', 'Returns'].map((item) => (
+                <li key={item}>
+                  <Link 
+                    href="#" 
+                    className="text-gray-400 hover:text-yellow-400 text-sm transition-colors"
+                  >
+                    {item}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+
+          {/* Social/Newsletter Column */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            viewport={{ once: true }}
+            className="space-y-4"
+          >
+            <h3 className="text-lg font-medium text-white">Connect</h3>
+            <div className="flex gap-4 text-lg">
+              {[
+                { icon: <FaGithub />, label: 'GitHub' },
+                { icon: <FaLinkedin />, label: 'LinkedIn' },
+                { icon: <FaTwitter />, label: 'Twitter' }
+              ].map((social) => (
+                <motion.a
+                  key={social.label}
+                  href="#"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-yellow-400 transition-colors"
+                  aria-label={social.label}
+                  whileHover={{ y: -3 }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  {social.icon}
+                </motion.a>
+              ))}
+            </div>
+
+            <div className="pt-4">
+              <h4 className="text-sm font-medium text-white mb-2">Stay Updated</h4>
+              <div className="flex">
+                <input 
+                  type="email" 
+                  placeholder="Your email"
+                  className="bg-gray-800 text-white text-sm px-3 py-2 rounded-l-md focus:outline-none focus:ring-1 focus:ring-yellow-400 w-full border border-gray-700"
+                />
+                <button className="bg-gray-700 hover:bg-yellow-500 hover:text-gray-900 text-gray-300 text-sm font-medium px-3 py-2 rounded-r-md transition-colors border border-gray-700 border-l-0">
+                  Subscribe
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Bottom Bar */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          viewport={{ once: true }}
+          className="border-t border-gray-800 mt-12 pt-6 flex flex-col md:flex-row justify-between items-center"
+        >
+          <p className="text-gray-500 text-sm">
+            © {new Date().getFullYear()} L&B Bazaar. All rights reserved.
           </p>
-        </div>
-
-        {/* Links */}
-        <div>
-          <h2 className="text-xl font-semibold mb-4">Quick Links</h2>
-          <ul className="space-y-2 text-sm">
-            <li>
-              <Link href="/" className="hover:text-blue-400 transition">
-                Home
-              </Link>
-            </li>
-            <li>
-              <Link href="/login" className="hover:text-blue-400 transition">
-                Login
-              </Link>
-            </li>
-            <li>
-              <Link href="/signup" className="hover:text-blue-400 transition">
-                Sign Up
-              </Link>
-            </li>
-          </ul>
-        </div>
-
-        {/* Social */}
-        <div>
-          <h2 className="text-xl font-semibold mb-4">Follow Us</h2>
-          <div className="flex space-x-4 text-2xl">
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400">
-              <FaGithub />
-            </a>
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400">
-              <FaLinkedin />
-            </a>
-            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400">
-              <FaTwitter />
-            </a>
+          <div className="flex gap-4 mt-4 md:mt-0">
+            <Link href="#" className="text-gray-500 hover:text-yellow-400 text-sm transition-colors">
+              Privacy Policy
+            </Link>
+            <Link href="#" className="text-gray-500 hover:text-yellow-400 text-sm transition-colors">
+              Terms of Service
+            </Link>
           </div>
-        </div>
-      </div>
-
-      {/* Bottom */}
-      <div className="text-center text-sm text-gray-500 mt-10 border-t border-gray-700 pt-6">
-        © {new Date().getFullYear()} MyApp. All rights reserved.
+        </motion.div>
       </div>
     </footer>
   );

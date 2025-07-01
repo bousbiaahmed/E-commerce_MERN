@@ -1,17 +1,51 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: [
-      'mtsplus.tn',
-      'encrypted-tbn0.gstatic.com',
-      'static.nike.com',
-      'assets.adidas.com',
-      'www.bershka.com',
-      'www.championstore.com',
-      'www.levi.com',
-      'www2.hm.com',
-      'media-cdn.citadium.com',
-      'resize.elle.fr' // ✅ nouveau domaine ajouté
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'mtsplus.tn',
+      },
+      {
+        protocol: 'https',
+        hostname: 'encrypted-tbn0.gstatic.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'static.nike.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'assets.adidas.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.bershka.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.championstore.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.levi.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'www2.hm.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'media-cdn.citadium.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'resize.elle.fr',
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com', // ✅ celui-ci est ESSENTIEL
+      },
     ],
   },
 };

@@ -20,8 +20,8 @@ mongoose
   .then(() => {
     console.log("Mongo connected");
   })
-  .catch((err) => {
-    console.log("failed to connect",err);
+  .catch((err: unknown) => {
+    console.log("failed to connect", err);
   });
 
 
