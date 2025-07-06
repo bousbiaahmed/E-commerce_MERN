@@ -4,11 +4,15 @@ import { useRouter } from 'next/navigation';
 import { FaShoppingCart } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
 import { useCart } from '../context/Cart/CartContext';
+import Link from 'next/link';
+import { motion } from 'framer-motion';
+import { useState} from 'react';
 
 function Navbar2() {
-  const { username, token, logout } = useAuth();
+  const { username, logout } = useAuth();
   const {cartItems}=useCart()
   const router = useRouter();
+  const [isScrolled, setIsScrolled] = useState(false);
 
   if (!username) return null;
 
@@ -23,12 +27,23 @@ function Navbar2() {
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         
         {/* Left: Logo ou Nom du site */}
-        <div className="text-xl font-semibold tracking-wide">L&B Bazzar</div>
-        
+         <motion.div
+          whileHover={{ scale: 1.03 }}
+          className={`text-2xl font-bold tracking-tight ${
+            isScrolled ? "text-gray-900 dark:text-white" : "text-white"
+          }`}
+        >
+          <Link href="/" className="flex items-center gap-1 cursor-pointer">
+            <span className="bg-yellow-400 text-gray-900 px-2 py-1 rounded-md">
+              L&B
+            </span>
+            <span className="hidden sm:inline ml-1">Bazaar</span>
+          </Link>
+        </motion.div>
         {/* Right: User info et actions */}
         <div className="flex items-center gap-4">
           {/* Avatar avec initiale */}
-          <div className="bg-blue-600 w-10 h-10 flex items-center justify-center rounded-full text-lg font-bold uppercase">
+          <div className="bg-yellow-400 w-10 h-10 flex items-center justify-center rounded-full text-lg font-bold uppercase">
             {username.charAt(0)}
           </div>
           <span className="text-base font-medium">{username}</span>

@@ -3,12 +3,21 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { FiArrowRight, FiShoppingBag, FiStar, FiTruck } from "react-icons/fi";
+import { useRouter } from "next/navigation";
+import { useAuth } from "../../context/Auth/AuthContext";
 
 const HomePage = () => {
+  const router = useRouter();
+  const { token } = useAuth();
+
+  const handleShopNow = () => {
+    router.push(token ? "/pages/Products" : "/pages/login");
+  };
+
   return (
-    <div className="relative bg-gradient-to-br from-gray-950 to-gray-900 text-white min-h-screen flex flex-col md:flex-row items-center justify-between px-6 md:px-16 py-12 overflow-hidden">
-      
-      {/* Text Section */}
+    <div className="relative bg-gradient-to-br from-[#0e0e0f] to-[#1c1c1f] text-white min-h-screen flex flex-col md:flex-row items-center justify-between px-6 md:px-16 py-16 overflow-hidden">
+
+      {/* TEXT SECTION */}
       <motion.div 
         className="z-10 max-w-xl text-center md:text-left"
         initial={{ opacity: 0, x: -50 }}
@@ -16,61 +25,59 @@ const HomePage = () => {
         transition={{ duration: 0.8, delay: 0.2 }}
       >
         <motion.h1 
-          className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight"
+          className="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight tracking-tight"
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.4 }}
         >
-          Step Into <span className="text-amber-400 font-extrabold">Comfort</span> and <span className="text-amber-400 font-extrabold">Style</span>
+          Step Into <span className="text-amber-400 drop-shadow-lg">Comfort</span> & <span className="text-amber-400 drop-shadow-lg">Style</span>
         </motion.h1>
-        
+
         <motion.p 
-          className="text-gray-400 text-lg sm:text-xl mb-8"
+          className="text-gray-400 text-lg sm:text-xl mb-8 leading-relaxed"
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.6 }}
         >
-          Discover premium footwear crafted for your every adventure.
+          Discover next-level sneakers built for performance, elegance, and everyday adventure.
         </motion.p>
-        
+
         <motion.div
+          className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start"
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.8 }}
-          className="flex flex-col sm:flex-row gap-4"
         >
-          <Link href="/products">
-            <motion.button 
-              whileHover={{ 
-                scale: 1.05,
-                boxShadow: "0 10px 25px -5px rgba(245, 158, 11, 0.4)"
-              }}
-              whileTap={{ scale: 0.95 }}
-              className="bg-amber-500 hover:bg-amber-400 text-gray-900 font-bold px-8 py-3 rounded-full transition-all duration-300 flex items-center gap-2"
+          <motion.button 
+            onClick={handleShopNow}
+            whileHover={{ 
+              scale: 1.05,
+              boxShadow: "0 10px 25px -5px rgba(245, 158, 11, 0.4)"
+            }}
+            whileTap={{ scale: 0.95 }}
+            className="bg-amber-500 hover:bg-amber-400 text-gray-900 font-semibold px-8 py-3 rounded-full transition-all duration-300 flex items-center gap-2"
+          >
+            Shop Now
+            <motion.span
+              animate={{ x: [0, 4, 0] }}
+              transition={{ repeat: Infinity, duration: 1.5 }}
             >
-              Shop Now
-              <motion.span
-                animate={{ x: [0, 4, 0] }}
-                transition={{ repeat: Infinity, duration: 1.5 }}
-              >
-                <FiArrowRight className="w-5 h-5" />
-              </motion.span>
-            </motion.button>
-          </Link>
-          
-          <Link href="/collections">
-            <motion.button 
+              <FiArrowRight className="w-5 h-5" />
+            </motion.span>
+          </motion.button>
+
+          <Link href="/pages/login" passHref>
+            <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="border border-amber-500/30 hover:border-amber-400/50 text-amber-400 font-medium px-6 py-3 rounded-full transition-all duration-300 flex items-center gap-2"
+              className="border border-gray-600 hover:border-amber-400 text-yellow-400 hover:text-white font-medium px-8 py-3 rounded-full transition duration-300"
             >
-              <FiShoppingBag className="w-5 h-5" />
-              View Collections
+              Login
             </motion.button>
           </Link>
         </motion.div>
 
-        {/* Features Grid */}
+        {/* FEATURE HIGHLIGHTS */}
         <motion.div 
           className="mt-12 grid grid-cols-2 sm:grid-cols-3 gap-4"
           initial={{ opacity: 0 }}
@@ -79,13 +86,13 @@ const HomePage = () => {
         >
           {[
             { icon: <FiStar className="w-5 h-5" />, text: "Premium Quality" },
-            { icon: <FiTruck className="w-5 h-5" />, text: "Free Shipping" },
-            { icon: <div className="w-5 h-5 flex items-center justify-center">30</div>, text: "Day Returns" }
+            { icon: <FiTruck className="w-5 h-5" />, text: "Fast Delivery" },
+            { icon: <div className="w-5 h-5 flex items-center justify-center font-bold">30</div>, text: "Day Return" }
           ].map((feature, index) => (
             <motion.div 
               key={index}
-              whileHover={{ y: -3 }}
-              className="flex items-center gap-2 bg-gray-800/50 backdrop-blur-sm px-3 py-2 rounded-lg"
+              whileHover={{ y: -2 }}
+              className="flex items-center gap-2 bg-white/5 backdrop-blur-sm px-3 py-2 rounded-lg shadow-sm"
             >
               <span className="text-amber-400">{feature.icon}</span>
               <span className="text-sm text-gray-300">{feature.text}</span>
@@ -94,22 +101,16 @@ const HomePage = () => {
         </motion.div>
       </motion.div>
 
-      {/* Product Image */}
+      {/* IMAGE SECTION */}
       <motion.div
-        className="relative w-full md:w-1/2 mt-10 md:mt-0 flex justify-center"
+        className="relative w-full md:w-1/2 mt-16 md:mt-0 flex justify-center"
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 1, delay: 0.4 }}
       >
         <motion.div
-          animate={{
-            y: [0, -15, 0],
-          }}
-          transition={{
-            duration: 4,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
+          animate={{ y: [0, -15, 0] }}
+          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
           className="relative"
         >
           <Image 
@@ -117,29 +118,30 @@ const HomePage = () => {
             alt="Premium Sneakers"
             width={600}
             height={600}
-            className="object-contain drop-shadow-2xl"
+            className="object-contain drop-shadow-[0_15px_30px_rgba(0,0,0,0.25)]"
             priority
           />
-          {/* Floating price tag */}
+
+          {/* FLOATING PRICE TAG */}
           <motion.div
             initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 1.2 }}
-            className="absolute top-1/4 -right-4 sm:right-4 bg-amber-500 text-gray-900 font-bold px-4 py-2 rounded-lg shadow-lg"
+            className="absolute top-1/4 -right-4 sm:right-4 bg-amber-500 text-gray-900 font-bold px-4 py-2 rounded-lg shadow-md"
           >
             $129.99
           </motion.div>
         </motion.div>
       </motion.div>
 
-      {/* Decorative Elements */}
+      {/* DECORATIVE ELEMENTS */}
       <motion.div 
         className="absolute right-[-100px] bottom-[-100px] w-[300px] h-[300px] bg-amber-400 rounded-full blur-3xl opacity-[0.15] z-0"
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 0.15 }}
         transition={{ duration: 1.5, delay: 0.6 }}
       />
-      
+
       <motion.div 
         className="absolute left-[-50px] top-[-50px] w-[200px] h-[200px] bg-blue-400 rounded-full blur-2xl opacity-[0.08] z-0"
         initial={{ scale: 0.8, opacity: 0 }}
@@ -147,7 +149,7 @@ const HomePage = () => {
         transition={{ duration: 1.5, delay: 0.8 }}
       />
 
-      {/* Floating particles */}
+      {/* FLOATING PARTICLES */}
       {[...Array(8)].map((_, i) => (
         <motion.div
           key={i}
