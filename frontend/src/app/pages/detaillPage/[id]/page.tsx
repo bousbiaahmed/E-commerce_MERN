@@ -6,6 +6,8 @@ import Image from 'next/image';
 import { FaCheckCircle, FaTimesCircle, FaShoppingCart } from 'react-icons/fa';
 import { useCart } from '@/app/context/Cart/CartContext';
 import Navbar2 from '@/app/components/Navbar2';
+import { BASE_URL } from '@/app/constants/baseUrl';
+import Footer from '@/app/components/Footer';
 
 interface Product {
   _id: string;
@@ -30,7 +32,7 @@ export default function ProductDetailPage() {
     async function fetchProduct() {
       try {
         setLoading(true);
-        const res = await fetch(`/api/product/products/${id}`);
+        const res = await fetch(`${BASE_URL}/product/${id}`);
         if (!res.ok) {
           throw new Error(`Erreur ${res.status}: ${res.statusText}`);
         }
@@ -59,24 +61,17 @@ export default function ProductDetailPage() {
     }
   };
 
-  if (loading)
-    return <p className="text-center text-gray-600 mt-10">Chargement...</p>;
-  if (error)
-    return (
-      <p className="text-center text-red-600 mt-10">
-        Erreur : {error}
-      </p>
-    );
-  if (!product)
-    return <p className="text-center mt-10">Produit introuvable</p>;
+  if (loading) return <p className="text-center text-gray-600 mt-10">Chargement...</p>;
+  if (error) return <p className="text-center text-red-600 mt-10">Erreur : {error}</p>;
+  if (!product) return <p className="text-center mt-10">Produit introuvable</p>;
 
   return (
     <>
       <Navbar2 />
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center px-4 py-12">
-        <div className="w-full max-w-6xl bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-2xl grid md:grid-cols-2 gap-12">
-          {/* Image avec zoom au hover */}
-          <div className="relative w-full h-96 rounded-xl overflow-hidden cursor-zoom-in">
+      <div className="min-h-screen bg-white flex items-center justify-center px-4 py-12">
+        <div className="w-full max-w-6xl bg-white p-10 rounded-3xl shadow-xl grid md:grid-cols-2 gap-12 border border-gray-200">
+          {/* Image avec zoom */}
+          <div className="relative w-full h-96 rounded-2xl overflow-hidden">
             <Image
               src={product.image}
               alt={product.title}
@@ -87,18 +82,14 @@ export default function ProductDetailPage() {
             />
           </div>
 
-          {/* Informations produit */}
+          {/* Infos produit */}
           <div className="flex flex-col justify-between">
             <div>
-              <h1 className="text-5xl font-extrabold text-gray-900 dark:text-white mb-6">
-                {product.title}
-              </h1>
+              <h1 className="text-4xl font-bold text-gray-900 mb-4">{product.title}</h1>
 
-              <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-8">
-                {product.description}
-              </p>
+              <p className="text-gray-600 leading-relaxed mb-6">{product.description}</p>
 
-              <p className="text-4xl font-semibold text-blue-600 dark:text-blue-400 mb-8">
+              <p className="text-3xl font-bold text-amber-500 mb-6">
                 ${product.price.toFixed(2)}
               </p>
 
@@ -116,7 +107,7 @@ export default function ProductDetailPage() {
 
               {product.stock > 0 && (
                 <div className="mb-6 flex items-center gap-4">
-                  <label htmlFor="quantity" className="font-semibold text-gray-800 dark:text-gray-200">
+                  <label htmlFor="quantity" className="font-medium text-gray-700">
                     Quantité:
                   </label>
                   <input
@@ -128,27 +119,27 @@ export default function ProductDetailPage() {
                     onChange={(e) =>
                       setQuantity(Math.min(product.stock, Math.max(1, Number(e.target.value))))
                     }
-                    className="w-20 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-20 px-3 py-2 border border-gray-300 rounded-lg focus:ring-amber-400 focus:border-amber-400"
                   />
                 </div>
               )}
             </div>
 
-            {/* Bouton Ajouter au panier */}
+            {/* Ajouter au panier */}
             <button
-              className={`mt-4 bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl flex items-center justify-center gap-3 font-semibold transition-transform transform active:scale-95 disabled:bg-gray-400 disabled:cursor-not-allowed`}
+              className={`mt-4 bg-amber-400 hover:bg-amber-500 text-white px-6 py-3 rounded-xl flex items-center justify-center gap-3 font-semibold transition-all duration-300 active:scale-95 disabled:bg-gray-300 disabled:cursor-not-allowed`}
               disabled={product.stock === 0}
               onClick={handleAddToCart}
               aria-label="Ajouter au panier"
             >
-              <FaShoppingCart size={24} /> Ajouter au panier
+              <FaShoppingCart size={20} /> Ajouter au panier
             </button>
           </div>
         </div>
 
-        {/* Toast notification */}
+        {/* Toast de confirmation */}
         {showToast && (
-          <div className="fixed bottom-8 right-8 bg-blue-600 text-white px-6 py-3 rounded-lg shadow-lg animate-fadeInOut z-50">
+          <div className="fixed bottom-8 right-8 bg-amber-500 text-white px-6 py-3 rounded-lg shadow-lg animate-fadeInOut z-50">
             Produit ajouté au panier !
           </div>
         )}
@@ -173,6 +164,7 @@ export default function ProductDetailPage() {
           animation: fadeInOut 3s ease forwards;
         }
       `}</style>
+      <Footer />
     </>
   );
 }
