@@ -59,14 +59,15 @@ function Cart() {
 
   const handleRemove = async (productId: string) => {
     await removeItemInCart(productId);
-    fetchCart();
+    
   };
 
   const handleQuantity = async (productId: string, quantity: number) => {
     if (quantity < 1) return;
     await updateItemInCart(productId, quantity);
-    fetchCart();
+    
   };
+  fetchCart();
 
   useEffect(() => {
     fetchCart();

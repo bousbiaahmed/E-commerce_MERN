@@ -17,7 +17,6 @@ const HomePage = () => {
   return (
     <div className="relative bg-gradient-to-br from-[#0e0e0f] to-[#1c1c1f] text-white min-h-screen flex flex-col md:flex-row items-center justify-between px-6 md:px-16 py-16 overflow-hidden">
 
-      {/* TEXT SECTION */}
       <motion.div 
         className="z-10 max-w-xl text-center md:text-left"
         initial={{ opacity: 0, x: -50 }}
@@ -77,7 +76,6 @@ const HomePage = () => {
           </Link>
         </motion.div>
 
-        {/* FEATURE HIGHLIGHTS */}
         <motion.div 
           className="mt-12 grid grid-cols-2 sm:grid-cols-3 gap-4"
           initial={{ opacity: 0 }}
@@ -101,7 +99,6 @@ const HomePage = () => {
         </motion.div>
       </motion.div>
 
-      {/* IMAGE SECTION */}
       <motion.div
         className="relative w-full md:w-1/2 mt-16 md:mt-0 flex justify-center"
         initial={{ opacity: 0, scale: 0.9 }}
@@ -122,7 +119,6 @@ const HomePage = () => {
             priority
           />
 
-          {/* FLOATING PRICE TAG */}
           <motion.div
             initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -134,7 +130,6 @@ const HomePage = () => {
         </motion.div>
       </motion.div>
 
-      {/* DECORATIVE ELEMENTS */}
       <motion.div 
         className="absolute right-[-100px] bottom-[-100px] w-[300px] h-[300px] bg-amber-400 rounded-full blur-3xl opacity-[0.15] z-0"
         initial={{ scale: 0.8, opacity: 0 }}
@@ -149,7 +144,6 @@ const HomePage = () => {
         transition={{ duration: 1.5, delay: 0.8 }}
       />
 
-      {/* FLOATING PARTICLES */}
       {[...Array(8)].map((_, i) => (
         <motion.div
           key={i}

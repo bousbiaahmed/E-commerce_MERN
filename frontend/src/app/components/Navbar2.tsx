@@ -1,16 +1,17 @@
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
 import { useAuth } from '../context/Auth/AuthContext';
+import { useCart } from '../context/Cart/CartContext';
 import { useRouter } from 'next/navigation';
 import { FaShoppingCart } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
-import { useCart } from '../context/Cart/CartContext';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { useState} from 'react';
 
 function Navbar2() {
   const { username, logout } = useAuth();
-  const {cartItems}=useCart()
+  const { cartItems } = useCart();
   const router = useRouter();
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -21,13 +22,11 @@ function Navbar2() {
     router.push('/');
   };
 
-
   return (
     <nav className="w-full bg-gray-900 text-white px-6 py-3 shadow-md">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
-        
         {/* Left: Logo ou Nom du site */}
-         <motion.div
+        <motion.div
           whileHover={{ scale: 1.03 }}
           className={`text-2xl font-bold tracking-tight ${
             isScrolled ? "text-gray-900 dark:text-white" : "text-white"
@@ -40,6 +39,7 @@ function Navbar2() {
             <span className="hidden sm:inline ml-1">Bazaar</span>
           </Link>
         </motion.div>
+
         {/* Right: User info et actions */}
         <div className="flex items-center gap-4">
           {/* Avatar avec initiale */}
@@ -58,19 +58,19 @@ function Navbar2() {
             <FiLogOut className="text-xl" />
           </button>
 
-          {/* Cart Icon */}
-          <button 
-          onClick={()=>{router.push("/pages/CartPage")}}
+          {/* Cart Icon with Link */}
+          <Link 
+            href="/pages/CartPage" 
             aria-label="Cart"
             className="relative hover:text-yellow-400 transition-colors"
             title="Shopping Cart"
           >
             <FaShoppingCart className="text-3xl" />
-            {/* Optionnel : Badge panier */}
+            {/* Badge panier */}
             <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
               {cartItems.length}
             </span>
-          </button>
+          </Link>
         </div>
       </div>
     </nav>

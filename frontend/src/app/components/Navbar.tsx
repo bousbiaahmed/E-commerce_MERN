@@ -31,7 +31,6 @@ const Navbar = () => {
       } px-4 sm:px-6 py-3`}
     >
       <div className="max-w-7xl mx-auto flex justify-between items-center">
-        {/* Logo */}
         <motion.div
           whileHover={{ scale: 1.03 }}
           className={`text-2xl font-bold tracking-tight ${
@@ -46,7 +45,6 @@ const Navbar = () => {
           </Link>
         </motion.div>
 
-        {/* Navigation actions */}
         <div className="flex items-center space-x-4 sm:space-x-6">
           {token ? (
             <>
@@ -106,7 +104,7 @@ const Navbar = () => {
 
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Link
-                  href="/pages/register"
+                  href="/pages/Register"
                   className="flex items-center space-x-1 bg-yellow-400 hover:bg-yellow-500 focus:ring-2 focus:ring-yellow-300 focus:outline-none 
                   text-gray-900 px-3 py-2 rounded-md transition-all shadow-sm text-sm font-semibold"
                 >

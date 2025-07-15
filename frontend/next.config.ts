@@ -46,6 +46,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'images.unsplash.com', // ✅ celui-ci est ESSENTIEL
       },
+      {
+        protocol: 'https',
+        hostname: 'chillandlit.tn', // ✅ celui-ci est ESSENTIEL
+      },
     ],
   },
 };

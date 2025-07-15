@@ -7,6 +7,22 @@ import { useRouter } from 'next/navigation';
 import { motion } from "framer-motion";
 import { Lock, Mail, Eye, EyeOff, Loader2 } from "lucide-react";
 
+function parseJwt(token: string) {
+  try {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split('')
+        .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+        .join('')
+    );
+    return JSON.parse(jsonPayload);
+  } catch (e) {
+    return null;
+  }
+}
+
 export default function LoginPage() {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -15,6 +31,7 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
+  
 
   const onSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -52,8 +69,24 @@ export default function LoginPage() {
         return;
       }
 
+      localStorage.setItem("token", resData);
+
+      const decoded = parseJwt(resData);
+      if (!decoded) {
+        setError("Invalid token received");
+        setLoading(false);
+        return;
+      }
+
+      const role = decoded.role;
+
       login(email, resData);
-      router.push("/pages/Products");
+
+      if (role === "admin") {
+        router.push("/Dashboard/dashboardGenerale");
+      } else {
+        router.push("/pages/Products");
+      }
     } catch {
       setError("Network error. Please try again.");
       setLoading(false);
@@ -69,7 +102,6 @@ export default function LoginPage() {
         className="w-full max-w-md"
       >
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden">
-          {/* Yellow accent bar */}
           <div className="bg-yellow-400 h-2 w-full"></div>
           
           <div className="p-8">
@@ -199,7 +231,7 @@ export default function LoginPage() {
               className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400"
             >
               Don’t have an account?{' '}
-              <a href="/pages/register" className="font-medium text-yellow-500 hover:text-yellow-600 dark:text-yellow-400">
+              <a href="/pages/Register" className="font-medium text-yellow-500 hover:text-yellow-600 dark:text-yellow-400">
                 Create one
               </a>
             </motion.div>

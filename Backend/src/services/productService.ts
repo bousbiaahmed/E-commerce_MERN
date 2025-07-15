@@ -1,8 +1,7 @@
 import productModel from "../models/productModel";
 
-export const getAllProducts = async () => {
-    return await productModel.find();
-
+export async function getAllProducts() {
+  return await productModel.find(); 
 }
 
 export const seedInitialProducts=async()=>{

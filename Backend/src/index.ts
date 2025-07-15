@@ -6,6 +6,9 @@ import { seedInitialProducts } from "./services/productService";
 import productRoute from "./routes/productRoute";
 import cartRoute from "./routes/cartRoute";
 import cors from "cors"; 
+import userModel from "./models/userModel";
+import bcrypt from 'bcrypt';
+import dashboardRoute from "./routes/dashboardRoute";
 const app = express();
 
 
@@ -24,14 +27,36 @@ mongoose
     console.log("failed to connect", err);
   });
 
+  const createAdmin = async ()=>{
+    const email = process.env.ADMIN_EMAIL;
+    const password = process.env.ADMIN_PASSWORD;
+    if (!email || !password) {
+      throw new Error("ADMIN_EMAIL or ADMIN_PASSWORD is not defined in .env");
+    }
 
-  //seed the products to database
+      await userModel.deleteOne({role:"admin"});
+      const hashedPassword = await bcrypt.hash(password, 10);
+  
 
+      await userModel.create({
+        firstName: "Admin",
+        lastName: "Root",
+        email: email,
+        password: hashedPassword,
+        role: "admin",
+      });
+    
+      console.log("Admin created successfully");
+  }
+
+
+  createAdmin().catch((err) => console.error(err));
 seedInitialProducts();
 
 app.use('/user',userRoute)
 app.use('/product',productRoute)
 app.use('/cart',cartRoute)
+app.use('/dashboard',dashboardRoute)
 
 
 app.listen(port,()=>{
