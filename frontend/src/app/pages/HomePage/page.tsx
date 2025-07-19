@@ -1,14 +1,44 @@
 'use client';
+
+import React, { useEffect, useState } from 'react';
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { FiArrowRight, FiShoppingBag, FiStar, FiTruck } from "react-icons/fi";
+import { FiArrowRight, FiStar, FiTruck } from "react-icons/fi";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../context/Auth/AuthContext";
+
+type Circle = {
+  width: number;
+  height: number;
+  left: string;
+  top: string;
+  y: number;
+  x: number;
+  duration: number;
+  delay: number;
+};
 
 const HomePage = () => {
   const router = useRouter();
   const { token } = useAuth();
+
+  const [circles, setCircles] = useState<Circle[]>([]);
+
+  // Générer les cercles uniquement côté client une fois
+  useEffect(() => {
+    const generatedCircles: Circle[] = Array.from({ length: 8 }).map(() => ({
+      width: Math.random() * 10 + 5,
+      height: Math.random() * 10 + 5,
+      left: `${Math.random() * 100}%`,
+      top: `${Math.random() * 100}%`,
+      y: (Math.random() - 0.5) * 60,
+      x: (Math.random() - 0.5) * 40,
+      duration: Math.random() * 10 + 10,
+      delay: Math.random() * 2,
+    }));
+    setCircles(generatedCircles);
+  }, []);
 
   const handleShopNow = () => {
     router.push(token ? "/pages/Products" : "/pages/login");
@@ -49,18 +79,12 @@ const HomePage = () => {
         >
           <motion.button 
             onClick={handleShopNow}
-            whileHover={{ 
-              scale: 1.05,
-              boxShadow: "0 10px 25px -5px rgba(245, 158, 11, 0.4)"
-            }}
+            whileHover={{ scale: 1.05, boxShadow: "0 10px 25px -5px rgba(245, 158, 11, 0.4)" }}
             whileTap={{ scale: 0.95 }}
             className="bg-amber-500 hover:bg-amber-400 text-gray-900 font-semibold px-8 py-3 rounded-full transition-all duration-300 flex items-center gap-2"
           >
             Shop Now
-            <motion.span
-              animate={{ x: [0, 4, 0] }}
-              transition={{ repeat: Infinity, duration: 1.5 }}
-            >
+            <motion.span animate={{ x: [0, 4, 0] }} transition={{ repeat: Infinity, duration: 1.5 }}>
               <FiArrowRight className="w-5 h-5" />
             </motion.span>
           </motion.button>
@@ -118,7 +142,6 @@ const HomePage = () => {
             className="object-contain drop-shadow-[0_15px_30px_rgba(0,0,0,0.25)]"
             priority
           />
-
           <motion.div
             initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -144,29 +167,31 @@ const HomePage = () => {
         transition={{ duration: 1.5, delay: 0.8 }}
       />
 
-      {[...Array(8)].map((_, i) => (
+      {/* Cercles flottants */}
+      {circles.map((circle, i) => (
         <motion.div
           key={i}
           className="absolute rounded-full bg-amber-400/20"
           style={{
-            width: Math.random() * 10 + 5 + 'px',
-            height: Math.random() * 10 + 5 + 'px',
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
+            width: `${circle.width}px`,
+            height: `${circle.height}px`,
+            left: circle.left,
+            top: circle.top,
           }}
           animate={{
-            y: [0, (Math.random() - 0.5) * 60, 0],
-            x: [0, (Math.random() - 0.5) * 40, 0],
+            y: [0, circle.y, 0],
+            x: [0, circle.x, 0],
             opacity: [0.2, 0.4, 0.2],
           }}
           transition={{
-            duration: Math.random() * 10 + 10,
+            duration: circle.duration,
             repeat: Infinity,
             ease: "easeInOut",
-            delay: Math.random() * 2,
+            delay: circle.delay,
           }}
         />
       ))}
+
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import userModel from "../models/userModel";
 import bcrypt from 'bcrypt'
 import jwt from "jsonwebtoken"
+import mongoose from "mongoose";
 interface RegisterParams{
     firstName:String;
     lastName:string;
@@ -60,6 +61,33 @@ export const login= async({email,password}:LoginParams)=>{
 
 
 }
+ export const deletedUser = async (id: string) => {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return { statusCode: 400, data: { message: 'Format d\'ID invalide' } };
+    }
+  
+    const deletedUser = await userModel.findByIdAndDelete(id);
+    if (!deletedUser) {
+      return { statusCode: 404, data: { message: 'Utilisateur non trouvé' } };
+    }
+  
+    return { statusCode: 200, data: { message: 'Utilisateur supprimé avec succès' } };
+  };
+
+
+   interface LoginAdmin{
+    role :"admin" |"user";
+    }
+    export const getData = async () => {
+        try {
+          // Only return users with role 'user'
+          const users = await userModel.find({ role: 'user' }, 'firstName email');
+          return { data: { users }, statusCode: 200 };
+        } catch (error) {
+          console.error('Erreur lors de la récupération des utilisateurs:', error);
+          return { data: { users: [] }, statusCode: 500 };
+        }
+      };
 
 
 const generateJWT=(data:any)=>{

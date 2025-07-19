@@ -4,51 +4,18 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'mtsplus.tn',
+        hostname: 'www.nike.com',
+        pathname: '/**',
       },
       {
         protocol: 'https',
-        hostname: 'encrypted-tbn0.gstatic.com',
+        hostname: 'images.unsplash.com',
+        pathname: '/**',
       },
       {
         protocol: 'https',
         hostname: 'static.nike.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'assets.adidas.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'www.bershka.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'www.championstore.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'www.levi.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'www2.hm.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'media-cdn.citadium.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'resize.elle.fr',
-      },
-      {
-        protocol: 'https',
-        hostname: 'images.unsplash.com', // ✅ celui-ci est ESSENTIEL
-      },
-      {
-        protocol: 'https',
-        hostname: 'chillandlit.tn', // ✅ celui-ci est ESSENTIEL
+        pathname: '/**',
       },
     ],
   },

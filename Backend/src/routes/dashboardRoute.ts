@@ -3,12 +3,13 @@ import productModel from "../models/productModel";
 import validateJWT from "../middlewares/validateJWT";
 const router = express.Router();
 
-router.post('/products', validateJWT, async (req, res) => {
+router.post('/products', validateJWT, async (req, res): Promise<void> => {
     try {
       const { title, image, price, stock = 0, description = '', category = '' } = req.body;
   
       if (!title || !image || typeof price !== 'number') {
-        return res.status(400).json({ message: 'Title, image, and numeric price are required.' });
+        res.status(400).json({ message: 'Title, image, and numeric price are required.' });
+        return;
       }
   
       const newProduct = new productModel({ title, image, price, stock, description, category });
@@ -19,7 +20,7 @@ router.post('/products', validateJWT, async (req, res) => {
       console.error('Error creating product:', error);
       res.status(500).json({ message: 'Error creating product', error });
     }
-  });
+});
   
 
 export default router;
